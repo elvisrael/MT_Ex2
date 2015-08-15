@@ -1,6 +1,6 @@
 package clique_algo;
 
-import java.util.Vector;
+//import java.util.Vector;
 
 /**
  * this class represent a dedicated Clique class which assumes undirected graph and holds 

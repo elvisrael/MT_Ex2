@@ -1,11 +1,7 @@
 package clique_algo;
 
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
-import java.util.Vector;
 
 public class Clique_Tester {
 	public static int minQ = 10, maxQ=20;
