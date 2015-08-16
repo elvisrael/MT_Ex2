@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Clique_Tester {
 	public static int minQ = 10, maxQ=20;
-	public static double TH = 0.7;
+	public static double TH = 0.75;
 	public static String in_file = "test1.csv";
 	public static String out_file = null;
 	public static boolean Debug = true;
@@ -43,7 +43,7 @@ public class Clique_Tester {
 	}
 	static void help() {
 		System.out.println("Wrong Parameters! should use: java -jar All_Cliques.jar <input file> <round value> <min clique> <max clique> <output file> <max_cliques> <Graph convert flag>");
-		System.out.println("Wrong Parameters! should use: java -jar All_Cliques.jar test1.csv " + TH + " " + minQ + " " + maxQ + " test1_out.csv "+ MAX_CLIQUE +" true");
+		System.out.println("Wrong Parameters! should use: java -jar All_Cliques.jar test1.csv " + TH + " " + minQ + " " + maxQ + " test1_out.csv "+ MAX_CLIQUE + " " + Convert);
 	}
 	static void parse(String[] a){
 		try {
