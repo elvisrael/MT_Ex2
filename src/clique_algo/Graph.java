@@ -268,12 +268,11 @@ class Graph {
 		for(int i=0;i<len;i++) {
 
 			VertexSet curr_edge = C0.elementAt(i);
-			Clique edge = new Clique(curr_edge.at(0),curr_edge.at(1) );
-			
-			if((edge.size() + edge.commonNi().size()) >= min_size && (edge.size() + edge.commonNi().size()) <= max_size){	//optimization
+			Clique edge = new Clique(curr_edge.at(0),curr_edge.at(1) );			
+			if((edge.size() + edge.commonNi().size()) >= min_size){	//optimization
 				Vector<Clique> C1 = allC_seed(edge, min_size, max_size);
-//				for(int b=0;b<C1.size();b++) {	//before optimization
-				for(int b = C1.size()-1; C1.elementAt(b).size() >= min_size; b--){	//optimization
+				//				for(int b=0;b<C1.size();b++) {	//before optimization
+				for(int b = C1.size()-1; b >= 0 && C1.elementAt(b).size() >= min_size; b--){	//optimization
 					Clique c = C1.elementAt(b);
 					if (c.size()>=min_size) {
 						os.println(count+", "+i+","+c.size()+", "+c.toFile());
@@ -315,25 +314,56 @@ class Graph {
 
 	Vector<Clique> allC_seed(Clique edge, int min_size, int max_size) {
 		Vector<Clique> ans = new Vector<Clique>();
-		ans.add(edge);
 		int i=0;
 		//	int size = 2;
-		while (ans.size()>i) {
-			Clique curr = ans.elementAt(i);
-			if(curr.size() < max_size){
-				VertexSet Ni = curr.commonNi();
-				for(int a=0;a<Ni.size();a++) {
-					Clique c = new Clique(curr,Ni.at(a));
-					ans.add(c);
-				}
+		if((edge.size() + edge.commonNi().size()) == min_size ){
+			Clique curr = new Clique(edge);
+			VertexSet Ni = curr.commonNi();
+			for(i = 0; i < Ni.size(); i++){
+				curr.addVertex(Ni.at(i));
 			}
-			else {i=ans.size();} // speedup trick 
-			i++;
+			ans.add(curr);
 		}
-
+		else{
+			ans.add(edge);
+			while (ans.size()>i) {
+				Clique curr = ans.elementAt(i);
+				if(curr.size() < max_size){
+					VertexSet Ni = curr.commonNi();
+					for(int a=0;a<Ni.size();a++) {
+						Clique c = new Clique(curr,Ni.at(a));
+						ans.add(c);
+					}
+				}
+				else {i=ans.size();} // speedup trick 
+				i++;
+			}
+		}
 		return ans;
 	}
 
+	// old version:
+
+	//	Vector<Clique> allC_seed(Clique edge, int min_size, int max_size) {
+	//		Vector<Clique> ans = new Vector<Clique>();
+	//		ans.add(edge);
+	//		int i=0;
+	//		//	int size = 2;
+	//		while (ans.size()>i) {
+	//			Clique curr = ans.elementAt(i);
+	//			if(curr.size() < max_size){
+	//				VertexSet Ni = curr.commonNi();
+	//				for(int a=0;a<Ni.size();a++) {
+	//					Clique c = new Clique(curr,Ni.at(a));
+	//					ans.add(c);
+	//				}
+	//			}
+	//			else {i=ans.size();} // speedup trick 
+	//			i++;
+	//		}
+	//
+	//		return ans;
+	//	}
 
 	public void write2file() {
 		FileWriter fw=null;
