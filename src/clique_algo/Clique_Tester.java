@@ -42,8 +42,8 @@ public class Clique_Tester {
 		//}
 	}
 	static void help() {
-		System.out.println("Wrong Parameters! should use: java -jar All_Cliques <input file> <round value> <min clique> <max clique> <output file> <max_cliques> <Graph convert flag>");
-		System.out.println("Wrong Parameters! should use: java -jar All_Cliques test1.csv 0.7 5 7 test1_out.txt 10000 true");
+		System.out.println("Wrong Parameters! should use: java -jar All_Cliques.jar <input file> <round value> <min clique> <max clique> <output file> <max_cliques> <Graph convert flag>");
+		System.out.println("Wrong Parameters! should use: java -jar All_Cliques.jar test1.csv " + TH + " " + minQ + " " + maxQ + " test1_out.csv "+ MAX_CLIQUE + " " + Convert);
 	}
 	static void parse(String[] a){
 		try {

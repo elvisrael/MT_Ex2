@@ -328,11 +328,14 @@ class Graph {
 			ans.add(edge);
 			while (ans.size()>i) {
 				Clique curr = ans.elementAt(i);
-				if(curr.size() < max_size){
-					VertexSet Ni = curr.commonNi();
-					for(int a=0;a<Ni.size();a++) {
-						Clique c = new Clique(curr,Ni.at(a));
-						ans.add(c);
+				//				if(curr.size() < max_size){
+				if (curr.size() < max_size){
+					if((curr.size() + curr.commonNi().size()) >= min_size){
+						VertexSet Ni = curr.commonNi();
+						for(int a=0;a<Ni.size();a++) {
+							Clique c = new Clique(curr,Ni.at(a));
+							ans.add(c);
+						}
 					}
 				}
 				else {i=ans.size();} // speedup trick 
