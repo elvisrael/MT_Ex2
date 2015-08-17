@@ -66,8 +66,10 @@ class Graph {
 				}
 				VertexSet vs = new VertexSet();
 				if(_mat_flag){
+					float v; //optimization
 					for(int i=0;i<len;i++) {
-						float v = new Double(st.nextToken()).floatValue();
+						//						float v = new Double(st.nextToken()).floatValue();
+						v = Float.valueOf(st.nextToken());//optimization
 						if(v>_TH & line< i) {
 							vs.add(i);
 							_E_size++;
@@ -104,98 +106,9 @@ class Graph {
 
 	}
 
-	/*************** Clique Algorithms ******************/
-	/*Vector<VertexSet>  All_Cliques(int Q_size) {
-		Vector<VertexSet> ans = new Vector<VertexSet>();
-		Vector<VertexSet>C0 = allEdges(); // all edges � all cliques of size 2/
-		ans.addAll(C0);
-		for(int i=3;i<=Q_size;i++) {
-			Vector<VertexSet>C1 = allC(C0);
-			ans.addAll(C1);
-			C0 = C1;
-		} // for
-		return ans;
-	}
-	Vector<VertexSet>  All_Cliques(int min_Q_size, int max_Q_size) {
-		Vector<VertexSet> ans = new Vector<VertexSet>();
-		Vector<VertexSet> C0 = allEdges(), C1=null; // all edges � all cliques of size 2/
-		for(int i=0;i<C0.size();i++) {
-			VertexSet curr = C0.elementAt(i);
-			C1 = All_Cliques_of_edge(curr, min_Q_size,  max_Q_size);
-//			System.out.println("Edge: ["+curr.at(0)+","+curr.at(1)+"]");
-			ans.addAll(C1);
-		}
-		return ans;
-	}*/
+
 	/**
-	 * this method retuns all the Cliques of size between [min,max] which contains the subVertexSet e (usually an edge);
-	 * @param min_Q_size
-	 * @param max_Q_size
-	 * @return
-	 */
-	/*
-	Vector<VertexSet>  All_Cliques_of_edge(VertexSet e, int min_Q_size, int max_Q_size) {
-		Vector<VertexSet> ans = new Vector<VertexSet>();
-		ans.add(e);
-		int i=0;
-		int last_size = e.size();
-		while(i<ans.size() & last_size <=max_Q_size) {
-			VertexSet curr = ans.elementAt(i);
-			VertexSet inter = intersection(curr);
-			addbiggerCliQ(ans,curr,inter);
-			last_size = ans.elementAt(ans.size()-1).size(); 
-			i++;
-		}
-		int start = 0; i=0;
-		while(i<ans.size() && start==0) {
-			if(ans.elementAt(i).size()<min_Q_size) {ans.remove(0);}
-			else start=1;
-			i++;
-		}
-		return ans;
-	}
-	Vector<VertexSet> allC(Vector<VertexSet> C0) {
-		Vector<VertexSet> ans = new Vector<VertexSet>();
-		for(int i=0;i<C0.size();i++) {
-			VertexSet curr = C0.elementAt(i);
-			VertexSet inter = intersection(curr);
-			if(inter.size()>0)  
-				addbiggerCliQ(ans,curr,inter); // strange clique expqnding function
-	}	
-		return ans;	
-	}
-	VertexSet intersection(VertexSet C) {
-		VertexSet ans = _V.elementAt(C.at(0));
-		for(int i=0;ans.size()>0 & i<C.size();i++) 
-			ans = ans.intersection(_V.elementAt(C.at(i)));
-		return ans;
-	}
-	private void addbiggerCliQ(Vector<VertexSet> ans,VertexSet curr ,VertexSet inter) {
-		int last = curr.at(curr.size()-1);
-		for(int i=0;i<inter.size();i++) {
-			int ind_inter = inter.at(i);
-			if(last<ind_inter) {
-				VertexSet c = new VertexSet(curr);
-				c.add(ind_inter);
-				ans.add(c);
-			}
-		}
-	}
-	private Vector<VertexSet> addbiggerCliQ(VertexSet curr ,VertexSet inter) {
-		Vector<VertexSet> ans = new Vector<VertexSet>(inter.size());
-		int last = curr.at(curr.size()-1); // last vertex in the current clique (ordered!)
-		for(int i=0;i<inter.size();i++) {
-			int ind_inter = inter.at(i);
-			if(last<ind_inter) {
-				VertexSet c = new VertexSet(curr);
-				c.add(ind_inter);
-				ans.add(c);
-			}
-		}
-		return ans;
-	}*/
-	/**
-	 * computes all the 2 cliques --> i.e. all the edges 
+	 * computes all cliques by size 2 --> i.e. all the edges 
 	 * @return
 	 */
 	private Vector<VertexSet> allEdges() { // all edges � all cliques of size 2/
@@ -223,9 +136,7 @@ class Graph {
 		Clique.init(this);
 		Vector<VertexSet> ans = new Vector<VertexSet>();
 		Vector<VertexSet>C0 = allEdges(); // all edges � all cliques of size 2/
-		//	ans.addAll(C0);
 		int len = C0.size();
-		//System.out.println("|E|= "+len);
 		@SuppressWarnings("unused")
 		int count = 0;
 		for(int i=0;i<len;i++) {
@@ -234,7 +145,6 @@ class Graph {
 			Clique edge = new Clique(curr_edge.at(0),curr_edge.at(1) );
 			Vector<Clique> C1 = allC_seed(edge, min_size, max_size);
 			count+=C1.size();
-			//System.out.println("alg2 "+i+") edge:["+curr_edge.at(0)+","+curr_edge.at(1)+"]"+C1.size() +"  total: "+count);
 			addToSet(ans, C1);
 		} // for
 		return ans;
@@ -250,13 +160,10 @@ class Graph {
 		int len = C0.size();
 		System.out.println("|E|= "+len);
 		int count = 0;
-
 		FileWriter fw=null;
 		try {fw = new FileWriter(out_file);} 
 		catch (IOException e) {e.printStackTrace();}
 		PrintWriter os = new PrintWriter(fw);
-		//os.println("A");
-
 		String ll = "0%   20%   40%   60%   80%   100%";
 		int t = Math.max(1,len/ll.length());
 		if(Clique_Tester.Debug){
@@ -264,15 +171,15 @@ class Graph {
 			System.out.println(ll);
 		}
 		os.println("All Cliques: file [min max] TH,"+this._file_name+","+min_size+", "+max_size+", "+this._TH);
-		os.println("index, edge, clique size, c0, c1, c2, c3, c4,  c5, c6, c7, c8, c9");
+		os.println("index, edge, clique size, c0, c1, c2, c3, c4,  c5, c6, c7, c8, c9, c10, c11, c12, c13, c14,  c15, c16, c17, c18, c19");
 		for(int i=0;i<len;i++) {
 
 			VertexSet curr_edge = C0.elementAt(i);
 			Clique edge = new Clique(curr_edge.at(0),curr_edge.at(1) );			
-			if((edge.size() + edge.commonNi().size()) >= min_size){	//optimization
+			if((edge.size() + edge.commonNi().size()) >= min_size){	//optimization, new line
 				Vector<Clique> C1 = allC_seed(edge, min_size, max_size);
-				//				for(int b=0;b<C1.size();b++) {	//before optimization
-				for(int b = C1.size()-1; b >= 0 && C1.elementAt(b).size() >= min_size; b--){	//optimization
+//				for(int b=0;b<C1.size();b++) {	//before optimization
+				for(int b = C1.size()-1; b >= 0 & C1.elementAt(b).size() >= min_size; b--){	//optimization
 					Clique c = C1.elementAt(b);
 					if (c.size()>=min_size) {
 						os.println(count+", "+i+","+c.size()+", "+c.toFile());
@@ -312,10 +219,12 @@ class Graph {
 		}
 	}
 
+	//	new version
+
 	Vector<Clique> allC_seed(Clique edge, int min_size, int max_size) {
 		Vector<Clique> ans = new Vector<Clique>();
 		int i=0;
-		//	int size = 2;
+//	 if edge + commonNi == min_size, then we have just one right clique - optimization
 		if((edge.size() + edge.commonNi().size()) == min_size ){
 			Clique curr = new Clique(edge);
 			VertexSet Ni = curr.commonNi();
@@ -328,10 +237,9 @@ class Graph {
 			ans.add(edge);
 			while (ans.size()>i) {
 				Clique curr = ans.elementAt(i);
-				//				if(curr.size() < max_size){
 				if (curr.size() < max_size){
-					if((curr.size() + curr.commonNi().size()) >= min_size){
-						VertexSet Ni = curr.commonNi();
+					VertexSet Ni = curr.commonNi();// optimization
+					if((curr.size() + Ni.size()) > min_size){ //optimization
 						for(int a=0;a<Ni.size();a++) {
 							Clique c = new Clique(curr,Ni.at(a));
 							ans.add(c);
@@ -347,26 +255,26 @@ class Graph {
 
 	// old version:
 
-	//	Vector<Clique> allC_seed(Clique edge, int min_size, int max_size) {
-	//		Vector<Clique> ans = new Vector<Clique>();
-	//		ans.add(edge);
-	//		int i=0;
-	//		//	int size = 2;
-	//		while (ans.size()>i) {
-	//			Clique curr = ans.elementAt(i);
-	//			if(curr.size() < max_size){
-	//				VertexSet Ni = curr.commonNi();
-	//				for(int a=0;a<Ni.size();a++) {
-	//					Clique c = new Clique(curr,Ni.at(a));
-	//					ans.add(c);
+	//		Vector<Clique> allC_seed(Clique edge, int min_size, int max_size) {
+	//			Vector<Clique> ans = new Vector<Clique>();
+	//			ans.add(edge);
+	//			int i=0;
+	//			//	int size = 2;
+	//			while (ans.size()>i) {
+	//				Clique curr = ans.elementAt(i);
+	//				if(curr.size() < max_size){
+	//					VertexSet Ni = curr.commonNi();
+	//					for(int a=0;a<Ni.size();a++) {
+	//						Clique c = new Clique(curr,Ni.at(a));
+	//						ans.add(c);
+	//					}
 	//				}
+	//				else {i=ans.size();} // speedup trick 
+	//				i++;
 	//			}
-	//			else {i=ans.size();} // speedup trick 
-	//			i++;
+	//	
+	//			return ans;
 	//		}
-	//
-	//		return ans;
-	//	}
 
 	public void write2file() {
 		FileWriter fw=null;
