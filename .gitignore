@@ -4,3 +4,8 @@ All_Cliques.jar
 bin/
 .classpath
 .project
+src/clique_algo/Clique_Tester.java
+.idea/
+MT_EX2.iml
+SpecSizeCliques.csv
+java/

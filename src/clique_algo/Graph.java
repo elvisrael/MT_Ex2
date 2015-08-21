@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -141,7 +140,6 @@ class Graph {
 		@SuppressWarnings("unused")
 		int count = 0;
 		for(int i=0;i<len;i++) {
-
 			VertexSet curr_edge = C0.elementAt(i);
 			Clique edge = new Clique(curr_edge.at(0),curr_edge.at(1) );
 			Vector<Clique> C1 = allC_seed(edge, min_size, max_size);
@@ -182,7 +180,7 @@ class Graph {
 //				for(int b=0;b<C1.size();b++) {	//before optimization
 				for(int b = C1.size()-1; b >= 0 && C1.elementAt(b).size() >= min_size; b--){	//optimization
 					Clique c = C1.elementAt(b);
-					if (c.size()>=min_size) {
+					if (c.size() >= min_size) {
 						os.println(count+", "+i+","+c.size()+", "+c.toFile());
 						count++;
 					}
@@ -305,7 +303,7 @@ class Graph {
 		Vector<VertexSet>C0 = allEdges();
 		int len = C0.size();
 		Clique edge = null;
-		for(int i=0;i<len;i++) {
+		for(int i = 0; i < len; i++) {
 			VertexSet curr_edge = C0.elementAt(i);
 			edge = new Clique(curr_edge.at(0),curr_edge.at(1) );	
 			tmp = edge.size() + edge.commonNi().size();
@@ -313,28 +311,19 @@ class Graph {
 		}
 		return ans;
 	}
+
+	/**
+	 * this function print to file all cliques with specified size
+	 * @param out_file - output file
+	 * @param specSize - specified size of cliques
+	 */
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public void findAllCliquesOfSpecifiedSize(String out_file, int specSize){
+		All_Cliques_DFS(out_file, specSize, specSize);
+	}
+
+
+		
 	
 	
 	
