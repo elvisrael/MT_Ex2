@@ -140,11 +140,15 @@ class Graph {
 		@SuppressWarnings("unused")
 		int count = 0;
 		for(int i=0;i<len;i++) {
+			Vector<Clique> tmp = new Vector<Clique>();
 			VertexSet curr_edge = C0.elementAt(i);
 			Clique edge = new Clique(curr_edge.at(0),curr_edge.at(1) );
 			Vector<Clique> C1 = allC_seed(edge, min_size, max_size);
-			count+=C1.size();
-			addToSet(ans, C1);
+			for(int b = C1.size()-1; b >= 0 && C1.elementAt(b).size() >= min_size; b--){
+				tmp.add(C1.elementAt(b));
+			}
+			count+=tmp.size();
+			addToSet(ans, tmp);
 		} // for
 		return ans;
 	}
@@ -222,7 +226,7 @@ class Graph {
 
 	Vector<Clique> allC_seed(Clique edge, int min_size, int max_size) {
 		Vector<Clique> ans = new Vector<Clique>();
-		int i=0;
+		int i= 0;
 //	 if edge + commonNi == min_size, then we have just one right clique - optimization
 		if((edge.size() + edge.commonNi().size()) == min_size ){
 			Clique curr = new Clique(edge);
@@ -239,6 +243,7 @@ class Graph {
 				if (curr.size() < max_size){
 					VertexSet Ni = curr.commonNi();// optimization
 					if((curr.size() + Ni.size()) > min_size){ //optimization
+
 						for(int a=0;a<Ni.size();a++) {
 							Clique c = new Clique(curr,Ni.at(a));
 							ans.add(c);
@@ -293,7 +298,26 @@ class Graph {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public void write2file(Vector<VertexSet> V, String out_file) {
+		FileWriter fw=null;
+		try {fw = new FileWriter(out_file);}
+		catch (IOException e) {e.printStackTrace();}
+		PrintWriter os = new PrintWriter(fw);
+		os.println("ALL_Cliques: of file: "+out_file);
+		os.println("Serial:");
+		os.println("");
+		for(int i=0;i < V.size();i++) {
+			VertexSet curr = V.elementAt(i);
+			os.println((i+1) + ", "+curr.toFile());
+		}
+		os.close();
+		try {
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * this function find clique with maximum size
 	 */
@@ -314,12 +338,13 @@ class Graph {
 
 	/**
 	 * this function print to file all cliques with specified size
-	 * @param out_file - output file
 	 * @param specSize - specified size of cliques
 	 */
 	
-	public void findAllCliquesOfSpecifiedSize(String out_file, int specSize){
-		All_Cliques_DFS(out_file, specSize, specSize);
+	public void findAllCliquesOfSpecifiedSize(int specSize){
+		Vector<VertexSet> V1 = new Vector<VertexSet>();
+		V1 = All_Cliques_DFS(specSize, specSize);
+		write2file(V1,"SpecifiedCliquesSize.csv");
 	}
 
 

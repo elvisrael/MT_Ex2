@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Clique_Tester {
 	public static int minQ = 10, maxQ=20;
-	public static double TH = 0.7;
+	public static double TH = 0.75;
 	public static String in_file = "test1.csv";
 	public static String out_file = null;
 	public static boolean Debug = true;
@@ -30,7 +30,7 @@ public class Clique_Tester {
 		long t3= new Date().getTime();
 		System.out.println("Alg3: "+(t3-t2)+"  ms");
 		System.out.println("Max size of clique = " + G.findMaxSizeOfClique());
-		G.findAllCliquesOfSpecifiedSize("SpecSizeCliques.csv", 43);
+		G.findAllCliquesOfSpecifiedSize(25);
 	}
 	
 	
